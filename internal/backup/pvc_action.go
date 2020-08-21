@@ -99,7 +99,7 @@ func (p *PVCBackupItemAction) Execute(item runtime.Unstructured, backup *velerov
 		return item, nil, errors.Errorf("Cannot snapshot PVC %s/%s, PVC has no storage class.", pvc.Namespace, pvc.Name)
 	}
 
-	p.Log.Infof("Fetching storage class for PV %s", *pvc.Spec.StorageClassName)
+	p.Log.Infof("Fetching storage class for PV %s", pv.Name)
 	storageClass, err := client.StorageV1().StorageClasses().Get(context.TODO(), *pvc.Spec.StorageClassName, metav1.GetOptions{})
 	if err != nil {
 		return nil, nil, errors.Wrap(err, "error getting storage class")

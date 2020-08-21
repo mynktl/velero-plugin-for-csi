@@ -68,6 +68,11 @@ func (p *VolumeSnapshotRestoreItemAction) Execute(input *velero.RestoreItemActio
 		return nil, errors.WithStack(err)
 	}
 
+	targetNamespace, ok := input.Restore.Spec.NamespaceMapping[vs.Namespace]
+	if ok {
+		vs.Namespace = targetNamespace
+	}
+
 	if !util.IsVolumeSnapshotExists(&vs, snapClient.SnapshotV1beta1()) {
 		snapHandle, exists := vs.Annotations[util.VolumeSnapshotHandleAnnotation]
 		if !exists {
